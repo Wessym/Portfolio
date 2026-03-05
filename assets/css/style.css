@@ -565,7 +565,7 @@ background: linear-gradient(33deg, rgba(242,242,255,1) 0%, rgba(235,249,255,1) 1
       clip: rect(0px, 150px, 150px, 74px);
   }
   .circle-wrap .circle .mask .fill {
-      clip: rect(0px, 75px, 150px, 0px);
+      clip: rect(0px, 80px, 150px, 0px);
       border:4px solid var(--accent);
   }
   .circle-wrap.firstPercentage .circle .mask.full,
@@ -1436,5 +1436,148 @@ background: linear-gradient(33deg, rgba(242,242,255,1) 0%, rgba(235,249,255,1) 1
 }
 .fa-regular, .far, .fas, .fa-solid  {
     font-weight: 900 !important;
+}
+
+
+
+/* ===========================
+   PORTFOLIO — FIX GRID / CARDS
+   (uniformise tailles + images)
+   =========================== */
+
+/* Grille flexible */
+.portfolio-body-con .portfolio-img-con{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 0;              /* override du margin: 0 -15px */
+  position: relative;
+}
+
+/* Items */
+.portfolio-body-con .portfolio-img-con .filterDiv{
+  float: none;            /* override float:left */
+  width: auto;            /* override width:100px */
+  padding: 0;             /* override padding 0 15px */
+  text-align: left;
+  position: relative;
+
+  flex: 0 0 calc(33.333% - 20px);
+  max-width: calc(33.333% - 20px);
+}
+
+/* Option: garder 1 projet “featured” plus large (1er item)
+   -> Si tu veux TOUT en même taille, supprime ce bloc. */
+.portfolio-body-con .portfolio-img-con .filterDiv:first-child{
+  flex: 0 0 calc(66.666% - 20px);
+  max-width: calc(66.666% - 20px);
+}
+
+/* Garder le filtre (show/hide) */
+.filterDiv{ display: none; }
+.filterDiv.show{ display: block; }
+
+/* Lien en block pour que toute la carte soit cliquable */
+.portfolio-body-con .portfolio-img-con .filterDiv > a{
+  display: block;
+  text-decoration: none;
+}
+
+/* Carte image */
+.portfolio-body-con .portfolio-img{
+  width: 100%;
+  border-radius: 19px;
+  overflow: hidden;
+  background: #f3f5ff;
+}
+
+/* Hauteur uniforme */
+.portfolio-body-con .portfolio-img figure{
+  margin: 0;
+  width: 100%;
+  height: 260px;          /* ajuste si tu veux (240/280) */
+  position: relative;
+  overflow: hidden;
+  border-radius: 19px;
+}
+
+/* Image = remplit toujours la carte */
+.portfolio-body-con .portfolio-img figure img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* clé pour uniformiser */
+  display: block;
+}
+
+/* Overlay gradient = s’adapte à la hauteur */
+.portfolio-body-con .portfolio-img figure:after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 19px;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.00) 0%,
+    rgba(17,19,43,0.70) 70%);
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+
+/* Titre + CTA */
+.portfolio-body-con .portfolio-img-content{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 16px 18px;
+  display: flex;          /* override display:none */
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+}
+
+.portfolio-body-con .portfolio-img-title{
+  max-width: calc(100% - 56px);
+}
+
+.portfolio-body-con .portfolio-img-title h4,
+.portfolio-body-con .portfolio-img-title p{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover */
+.portfolio-body-con .portfolio-img-con .filterDiv:hover .portfolio-img-content{
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.portfolio-body-con .portfolio-img-con .filterDiv:hover .portfolio-img figure:after{
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 991px){
+  .portfolio-body-con .portfolio-img-con .filterDiv,
+  .portfolio-body-con .portfolio-img-con .filterDiv:first-child{
+    flex: 0 0 calc(50% - 15px);
+    max-width: calc(50% - 15px);
+  }
+  .portfolio-body-con .portfolio-img figure{ height: 240px; }
+}
+@media (max-width: 575px){
+  .portfolio-body-con .portfolio-img-con .filterDiv,
+  .portfolio-body-con .portfolio-img-con .filterDiv:first-child{
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .portfolio-body-con .portfolio-img figure{ height: 230px; }
 }
 

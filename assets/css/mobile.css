@@ -1102,3 +1102,283 @@
         top: 0;
     }  
 }
+
+
+/* ==========================================
+   MODALS PORTFOLIO — layout type "BIBI"
+   Image à gauche / contenu à droite
+   Responsive + image box taille fixe
+   ========================================== */
+
+/* Agrandir un peu la fenêtre du modal */
+.modal-dialog {
+  max-width: 980px;
+}
+
+/* 2 colonnes sans changer le HTML :
+   figure = colonne 1, tout le reste = colonne 2 */
+.modal-body.service-model-content{
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+/* Figure (colonne image) : même taille partout */
+.modal-body.service-model-content > figure{
+  grid-column: 1;
+  grid-row: 1 / span 50;
+  margin: 0;
+
+  width: 100%;
+  aspect-ratio: 4 / 3;     /* taille uniforme */
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;     /* comme BIBI (fond propre) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image : ne déborde jamais, garde proportions */
+.modal-body.service-model-content > figure img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      /* IMPORTANT : pas de crop */
+  display: block;
+}
+
+/* Tout le texte à droite */
+.modal-body.service-model-content > :not(figure){
+  grid-column: 2;
+}
+
+/* Un peu de spacing “pro” */
+.modal-body.service-model-content h4{
+  margin-top: 0;
+}
+.modal-body.service-model-content p{
+  margin-bottom: 14px;
+}
+
+/* Eviter que le modal dépasse l'écran */
+.modal-body{
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+}
+
+/* Responsive : sur mobile on empile (image au-dessus) */
+@media (max-width: 767px){
+  .modal-dialog{
+    max-width: 95vw;
+    margin: 12px auto;
+  }
+
+  .modal-body.service-model-content{
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .modal-body.service-model-content > figure{
+    grid-column: 1;
+    grid-row: auto;
+    aspect-ratio: 16 / 10;   /* plus large sur mobile */
+  }
+
+  .modal-body.service-model-content > :not(figure){
+    grid-column: 1;
+  }
+}
+
+/* ==========================
+   PATCH: supprime le "blank space" des modals
+   ========================== */
+
+/* La grille ne doit pas créer des lignes inutiles */
+.modal-body.service-model-content{
+  grid-auto-rows: max-content;
+  align-content: start;
+}
+
+/* IMPORTANT: annule le span qui crée la hauteur énorme */
+.modal-body.service-model-content > figure{
+  grid-row: auto !important;     /* <-- ça kill le "span 50" */
+  align-self: start;
+}
+
+/* Optionnel: éviter les containers qui "stretch" */
+.modal-body.service-model-content > :not(figure){
+  align-self: start;
+}
+
+/* Scrolling propre : scrollbar uniquement si nécessaire */
+.modal-content{
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+.modal-body{
+  max-height: none !important;   /* annule l'ancien max-height */
+  overflow-y: auto;
+}
+
+
+
+
+/* ==========================================
+   MODALS PORTFOLIO — FINAL (sans espace vide)
+   Image à gauche (box fixe) + contenu à droite
+   Responsive + scrollbar seulement si nécessaire
+   ========================================== */
+
+/* Taille max du modal */
+.modal-dialog{
+  max-width: 980px;
+}
+
+/* Scroll seulement si la hauteur dépasse l'écran */
+.modal-content{
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+.modal-body{
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* IMPORTANT: on désactive le grid (cause du grand vide) */
+.modal-body.service-model-content{
+  display: block !important;
+  height: auto !important;        /* override ton height: 550px (max-width:575px) */
+  overflow: hidden;               /* "clearfix" pour le float */
+}
+
+/* Image à gauche : taille uniforme */
+.modal-body.service-model-content > figure{
+  float: left;
+  width: 44%;
+  max-width: 420px;
+  margin: 0 28px 18px 0;
+
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* override grid props si elles existent */
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+/* L'image remplit toujours la box */
+.modal-body.service-model-content > figure img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  display: block;
+}
+
+/* Le contenu à droite */
+.modal-body.service-model-content > :not(figure){
+  display: block;
+}
+
+/* Mobile : on empile */
+@media (max-width: 767px){
+  .modal-dialog{
+    max-width: 95vw;
+    margin: 12px auto;
+  }
+
+  .modal-body.service-model-content > figure{
+    float: none;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 14px 0;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* Bonus: cacher le bouton flottant (#button) quand un modal est ouvert */
+body.modal-open #button{
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+/* ==========================================
+   MODAL LINKS: "Visiter le site" = même style que bullet points
+   ========================================== */
+
+/* Les liens dans la liste gardent la même apparence que les bullets */
+.modal-body.service-model-content .model-list a{
+  display: block;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* Harmonise le <li> cliquable (dans un <a>) avec les bullets */
+.modal-body.service-model-content .model-list a li{
+  position: relative;
+  padding-left: 28px;        /* espace pour l'icône */
+  margin-left: 0;            /* annule le margin-left si existant */
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+/* Force l’icône check à la même position que les autres */
+.modal-body.service-model-content .model-list a li i{
+  position: absolute;
+  left: 0;
+  top: 2px;
+}
+
+/* Optionnel : un petit hover propre sans casser le style */
+.modal-body.service-model-content .model-list a:hover li{
+  text-decoration: underline;
+}
+
+/* ==========================================
+   FIX FINAL: "Visiter le site" EXACTEMENT comme les bullets
+   ========================================== */
+
+/* Le lien ne doit JAMAIS ressembler à un lien */
+.modal-body.service-model-content .model-list a,
+.modal-body.service-model-content .model-list a:visited,
+.modal-body.service-model-content .model-list a:hover,
+.modal-body.service-model-content .model-list a:focus {
+  color: inherit !important;
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  display: block; /* toute la ligne cliquable */
+}
+
+/* On impose les mêmes règles que tes bullets (desktop) */
+.modal-body.service-model-content .model-list a li{
+  position: relative;
+  margin-left: 26px !important; /* même logique que tes li */
+  padding-left: 0 !important;   /* annule l'ancien padding-left */
+  cursor: pointer;
+}
+
+/* Icône placée comme sur les bullets */
+.modal-body.service-model-content .model-list a li i{
+  position: absolute;
+  left: -26px !important;
+  top: 2px;
+}
+
+/* Sur mobile (tu as déjà 20px dans ton CSS), on aligne pareil */
+@media (max-width: 575px){
+  .modal-body.service-model-content .model-list a li{
+    margin-left: 20px !important;
+  }
+  .modal-body.service-model-content .model-list a li i{
+    left: -20px !important;
+  }
+}
